@@ -1,0 +1,137 @@
+:root{
+  color-scheme: dark;
+  --emerald:#00e6a0; --white:#f4fff9; --muted:rgba(244,255,249,.72);
+  --glass-bg:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.05));
+  --glass-edge:rgba(255,255,255,.35);
+  --bg:#00160f;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:var(--bg);color:var(--white);font-family:'Manrope',system-ui,sans-serif;overflow-x:hidden;display:flex;flex-direction:column}
+
+/* FUNDO VIVO: manchas coloridas + grade fina para o vidro ter o que refratar */
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;
+  background:linear-gradient(135deg,#00150e,#02402b 50%,#00150e)}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;animation:drift 18s ease-in-out infinite alternate}
+.b1{width:46vmax;height:46vmax;left:-12vmax;top:-10vmax;background:#00c985}
+.b2{width:40vmax;height:40vmax;right:-10vmax;top:25vh;background:#0aa6a0;animation-delay:-6s}
+.b3{width:34vmax;height:34vmax;left:25vw;bottom:-16vmax;background:#7be495;opacity:.5;animation-delay:-11s}
+.grid{position:absolute;inset:0;opacity:.35;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
+
+/* LUZ QUE SEGUE O PONTEIRO EM TODA A PÁGINA */
+.cursor-light{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:5;
+  background:radial-gradient(circle,rgba(160,255,215,.38) 0%,rgba(0,230,160,.14) 35%,transparent 68%);
+  mix-blend-mode:screen;opacity:0;transition:opacity .4s;will-change:transform}
+.cursor-light.on{opacity:1}
+
+/* LIQUID GLASS */
+.glass{position:relative;isolation:isolate;background:var(--glass-bg);
+  backdrop-filter:blur(18px) saturate(190%) brightness(1.08);-webkit-backdrop-filter:blur(18px) saturate(190%) brightness(1.08);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.5),inset 0 -1px 2px rgba(255,255,255,.12),inset 0 0 22px rgba(255,255,255,.06),0 18px 50px rgba(0,20,10,.35)}
+/* brilho interno que acompanha o ponteiro */
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,-20%),rgba(255,255,255,.34),transparent 45%);opacity:var(--glow,.55);transition:opacity .3s}
+/* borda especular: acende perto da luz */
+.glass::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,-20%),rgba(255,255,255,.95),rgba(255,255,255,0) 40%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glass:hover{--glow:1}
+
+header{margin:20px 22px 0;padding:16px 26px;border-radius:26px;display:flex;align-items:center;justify-content:space-between;animation:rise .8s ease both}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:600}
+.tag{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:40px 22px 150px}
+.hero{max-width:760px;width:100%;padding:54px 36px;border-radius:36px;text-align:center;animation:rise 1s ease both}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,8vw,68px);line-height:1.05;margin-bottom:14px}
+.hero p{font-size:clamp(16px,2.4vw,19px);line-height:1.7;color:var(--muted)}
+
+.cartilha{display:flex;align-items:center;justify-content:space-between;gap:24px;width:min(650px,100%);min-height:104px;padding:26px 36px;border-radius:34px;
+  color:#fff;text-decoration:none;font-size:clamp(20px,4vw,28px);font-weight:700;transition:transform .45s cubic-bezier(.2,1.6,.4,1)}
+.cartilha:hover{transform:translateY(-6px) scale(1.03)}
+.cartilha .arrow{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.14);color:var(--emerald);
+  transition:transform .45s cubic-bezier(.2,1.8,.4,1),background .3s}
+.cartilha:hover .arrow{transform:scale(1.35) rotate(-8deg);background:rgba(0,230,160,.28)}
+.cartilha svg{width:26px;height:26px}
+
+/* ATALHOS: cards menores, quadrados e com cantos arredondados */
+.recursos{width:min(900px,100%);display:flex;flex-direction:column;gap:16px;padding-top:4px}
+.recursos-label{text-align:center;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,255,249,.5)}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-height:230px;padding:24px;border-radius:28px;
+  flex:1 1 calc((100% - 32px) / 3);max-width:calc((100% - 32px) / 3);
+  color:#fff;text-decoration:none;transition:transform .45s cubic-bezier(.2,1.6,.4,1)}
+.tile:hover{transform:translateY(-5px) scale(1.02)}
+.tile:focus-visible{outline:2px solid var(--emerald);outline-offset:4px}
+.tile-tag{padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);
+  font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,255,249,.78);white-space:nowrap}
+.tile-arrow{position:absolute;top:20px;right:20px;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.12);color:var(--emerald);transition:transform .45s cubic-bezier(.2,1.8,.4,1),background .3s}
+.tile:hover .tile-arrow{transform:scale(1.18) rotate(-8deg);background:rgba(0,230,160,.28)}
+.tile-arrow svg{width:17px;height:17px}
+.tile-text{display:block;margin-top:auto}
+.tile strong{display:block;font-size:18px;line-height:1.28;letter-spacing:-.01em}
+.tile small{display:block;margin-top:8px;font-size:12.5px;line-height:1.55;color:var(--muted);font-weight:500}
+
+/* DOCK DE ÍCONES (aumentam quando o ponteiro passa) */
+.dock{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:10;
+  display:flex;align-items:flex-end;gap:14px;padding:12px 32px;border-radius:30px}
+.dock a{position:relative;display:grid;place-items:center;width:56px;height:56px;border-radius:16px;color:#fff;text-decoration:none;
+  background:linear-gradient(160deg,rgba(255,255,255,.28),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.55),0 8px 20px rgba(0,20,10,.3);
+  transform-origin:50% 100%;transform:translateX(var(--x,0px)) scale(var(--s,1));will-change:transform}
+.dock a svg{width:28px;height:28px}
+.dock a span{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) scale(calc(1 / var(--s,1)));white-space:nowrap;font-size:12px;font-weight:600;
+  padding:6px 12px;border-radius:12px;background:rgba(0,30,18,.7);border:1px solid rgba(255,255,255,.2);opacity:0;transition:opacity .2s;pointer-events:none}
+.dock a:hover span,.dock a:focus-visible span{opacity:1}
+.dock a:focus-visible{outline:2px solid var(--emerald);outline-offset:4px}
+
+footer{padding:0 22px 110px;text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,255,249,.5)}
+
+.chat{position:fixed;left:50%;bottom:calc(118px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:9;width:min(400px,calc(100vw - 28px));height:min(440px,58vh);display:flex;flex-direction:column;border-radius:28px}
+.chat[hidden]{display:none}
+.chat-head{padding:16px 20px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.15);display:flex;justify-content:space-between;align-items:center}
+.chat-head button{background:none;border:0;color:#fff;font-size:24px;cursor:pointer;line-height:1}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:85%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;white-space:pre-wrap}
+.m.bot{align-self:flex-start;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18)}
+.m.me{align-self:flex-end;background:rgba(0,230,160,.28);border:1px solid rgba(0,230,160,.45)}
+.chat-in{display:flex;gap:8px;padding:12px;border-top:1px solid rgba(255,255,255,.15)}
+.chat-in input{flex:1;min-width:0;padding:12px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,20,12,.35);color:#fff;font:inherit;font-size:14px;outline:none}
+.chat-in input:focus{border-color:var(--emerald)}
+.chat-in button{padding:0 18px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,230,160,.3);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (max-width:600px){
+  header{flex-direction:column;gap:6px;padding:16px}
+  .hero{padding:44px 20px}.cartilha{padding:22px}
+  .dock{gap:8px;padding:10px 24px}.dock a{width:48px;height:48px}
+}
+@media (max-width:760px){.tile{flex-basis:calc((100% - 16px) / 2);max-width:calc((100% - 16px) / 2)}}
+@media (max-width:520px){.tile{flex-basis:100%;max-width:100%;min-height:0;padding:20px}.tile strong{font-size:17px}}
+@media (min-width:1000px){.tile{aspect-ratio:1 / 1;min-height:0}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* AVISO DE RECURSO AINDA NÃO PUBLICADO */
+.toast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:12;
+  max-width:calc(100vw - 32px);padding:12px 18px;border-radius:999px;background:rgba(0,30,18,.92);
+  border:1px solid rgba(0,230,160,.4);color:var(--white);font-size:13px;font-weight:600;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ===== PEQUENOS AJUSTES DE ACESSIBILIDADE ===== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.chat-head button:hover{color:var(--emerald)}
+.chat-head .badge{display:inline-block;margin-left:6px;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d6fff0;background:rgba(0,230,160,.22);border:1px solid rgba(0,230,160,.4);vertical-align:middle}
+.chat-head button:focus-visible,.chat-in button:focus-visible{outline:2px solid var(--emerald);outline-offset:3px}
+.chat-in button:hover{background:rgba(0,230,160,.45)}
+.dock a:active{transform:translateX(var(--x,0px)) scale(calc(var(--s,1) * .94))}
+@media (prefers-reduced-motion:reduce){.cursor-light{display:none}}
