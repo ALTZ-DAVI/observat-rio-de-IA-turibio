@@ -135,3 +135,22 @@ footer{padding:0 22px 110px;text-align:center;font-size:11px;letter-spacing:.2em
 .chat-in button:hover{background:rgba(0,230,160,.45)}
 .dock a:active{transform:translateX(var(--x,0px)) scale(calc(var(--s,1) * .94))}
 @media (prefers-reduced-motion:reduce){.cursor-light{display:none}}
+
+/* ===== MODO LEVE: celulares e telas de toque ===== */
+@media (hover:none), (max-width:760px){
+  .blob{filter:none;animation:none;opacity:.7}
+  .b1{background:radial-gradient(circle,#00c985 0,transparent 65%)}
+  .b2{background:radial-gradient(circle,#0aa6a0 0,transparent 65%)}
+  .b3{background:radial-gradient(circle,#7be495 0,transparent 65%)}
+  .cursor-light{display:none}
+  .glass{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:inset 0 1px 1px rgba(255,255,255,.4),0 8px 24px rgba(0,20,10,.3)}
+  .glass::after{display:none}
+  /* cabeçalho, cartilha e cards sem desfoque: só translucidez */
+  header,.cartilha,.tile{backdrop-filter:none;-webkit-backdrop-filter:none;
+    background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.06))}
+}
+@media (hover:none){
+  .tile:hover,.cartilha:hover{transform:none}
+  .tile:hover .tile-arrow,.cartilha:hover .arrow{transform:none}
+}

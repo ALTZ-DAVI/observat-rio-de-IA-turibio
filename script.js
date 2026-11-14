@@ -2,6 +2,7 @@
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lite = window.matchMedia('(hover: none), (pointer: coarse)').matches; /* celulares e telas de toque */
 
   var light = document.getElementById('light');
   var glass = document.querySelectorAll('.glass');
@@ -24,7 +25,7 @@
     for (var g = 0; g < glass.length; g++) {
       var el = glass[g];
       var r = el.getBoundingClientRect();
-      if (!r.width || !r.height) continue;
+      if (!r.width || !r.height || r.bottom < 0 || r.top > window.innerHeight) continue;
       el.style.setProperty('--mx', ((x - r.left) / r.width * 100).toFixed(2) + '%');
       el.style.setProperty('--my', ((y - r.top) / r.height * 100).toFixed(2) + '%');
     }
@@ -64,7 +65,7 @@
     if (!raf) raf = requestAnimationFrame(frame);
   }
 
-  if (light && !reduceMotion) {
+  if (light && !reduceMotion && !lite) {
     window.addEventListener('pointermove', function (e) {
       tx = e.clientX;
       ty = e.clientY;
@@ -73,7 +74,7 @@
       kick();
     }, { passive: true });
 
-    document.addEventListener('pointerleave', function () {
+    document.documentElement.addEventListener('mouseleave', function () {
       active = false;
       light.classList.remove('on');
       kick();
